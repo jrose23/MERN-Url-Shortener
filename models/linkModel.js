@@ -31,7 +31,6 @@ const linkSchema = new Schema(
 
 linkSchema.pre('save', async function (next) {
     // Strip https://www. from long url
-    // TODO: Fix regex to only remove "https://www."
     const formattedLongUrl = this.longUrl.replace(/^(?:https?:\/\/)?(?:www\.)?/, '');
     this.longUrl = formattedLongUrl;
 
