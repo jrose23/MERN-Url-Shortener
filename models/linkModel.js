@@ -16,6 +16,14 @@ const linkSchema = new Schema(
         },
         qrCode: {
             type: String
+        },
+        ogData: {
+            ogImage: {
+                type: String
+            },
+            ogDescription: {
+                type: String
+            }
         }
     },
     { timestamps: true }
@@ -23,7 +31,8 @@ const linkSchema = new Schema(
 
 linkSchema.pre('save', async function (next) {
     // Strip https://www. from long url
-    const formattedLongUrl = this.longUrl.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '').split('/')[0];
+    // TODO: Fix regex to only remove "https://www."
+    const formattedLongUrl = this.longUrl.replace(/^(?:https?:\/\/)?(?:www\.)?/, '');
     this.longUrl = formattedLongUrl;
 
     // Generate QR Code
