@@ -9,8 +9,9 @@ const createLink = asyncHandler(async (req, res) => {
     const { longUrl } = req.body;
 
     const uid = new ShortUniqueId({ length: 6 });
+    const shortUrl = uid.rnd();
 
-    const shortLink = await Link.create({ longUrl, shortUrl: uid.rnd() });
+    const shortLink = await Link.create({ longUrl, shortUrl });
 
     if (!shortLink) {
         res.status(500);
