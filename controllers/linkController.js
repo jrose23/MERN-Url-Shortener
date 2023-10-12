@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const shortId = require('shortid');
+const ShortUniqueId = require('short-unique-id');
 const Link = require('../models/linkModel');
 
 // @desc    Create new Link
@@ -8,7 +8,9 @@ const Link = require('../models/linkModel');
 const createLink = asyncHandler(async (req, res) => {
     const { longUrl } = req.body;
 
-    const shortLink = await Link.create({ longUrl, shortUrl: shortId.generate() });
+    const uid = new ShortUniqueId({ length: 6 });
+
+    const shortLink = await Link.create({ longUrl, shortUrl: uid.rnd() });
 
     if (!shortLink) {
         res.status(500);
