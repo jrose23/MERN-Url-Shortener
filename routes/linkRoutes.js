@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { createLink, createCustomLink, getLongUrl } = require('../controllers/linkController');
+const {
+    createShortLink,
+    createCustomShortLink,
+    getLongUrl
+} = require('../controllers/linkController');
 
 // Creat default short link
-router.post('/', createLink);
+router.post('/', createShortLink);
 
 // Creat custom short link
-router.post('/custom', createCustomLink);
+router.post('/custom', createCustomShortLink);
 
 // Get long link
 router.get('/:shortUrl', getLongUrl);
