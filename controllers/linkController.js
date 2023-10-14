@@ -55,14 +55,16 @@ const getLongUrl = asyncHandler(async (req, res) => {
         throw new Error('Link not found');
     }
 
-    res.redirect(`http://${link.longUrl}`);
+    res.status(200).redirect(`http://${link.longUrl}`);
 });
 
 // @desc    Get QR code for short link
 // @route   GET /api/links/:shortUrl/qr
-// @access  Public
+// @access  Private
 const getShortLinkQrCode = asyncHandler(async (req, res) => {
     const { shortUrl } = req.params;
+
+    // TODO: Check if request is coming from Link Creator only
 
     const link = await Link.findOne({ shortUrl });
 
@@ -77,8 +79,7 @@ const getShortLinkQrCode = asyncHandler(async (req, res) => {
 
     res.contentType('image/png');
     res.set('Content-disposition', `attachment; filename=TUNLURL_QRcode_${shortUrl}.png`);
-    res.send(buffer);
-    res.status(200);
+    res.status(201).send(buffer);
 });
 
 module.exports = { createShortLink, createCustomShortLink, getLongUrl, getShortLinkQrCode };
