@@ -3,7 +3,7 @@ const Link = require('../models/linkModel');
 const ShortUniqueId = require('short-unique-id');
 const QRcode = require('qrcode');
 
-// @desc    Create new Link
+// @desc    Create new short link
 // @route   POST /api/links/
 // @access  Private
 const createShortLink = asyncHandler(async (req, res) => {
@@ -24,7 +24,7 @@ const createShortLink = asyncHandler(async (req, res) => {
     res.status(200).json(shortLink);
 });
 
-// @desc    Create new custom Link
+// @desc    Create new custom short link
 // @route   POST /api/links/custom
 // @access  Private
 const createCustomShortLink = asyncHandler(async (req, res) => {
@@ -42,7 +42,7 @@ const createCustomShortLink = asyncHandler(async (req, res) => {
     res.status(200).json(shortLink);
 });
 
-// @desc    Get long url
+// @desc    Get long url from short link
 // @route   GET /api/links/:shortUrl
 // @access  Public
 const getLongUrl = asyncHandler(async (req, res) => {
@@ -58,4 +58,27 @@ const getLongUrl = asyncHandler(async (req, res) => {
     res.redirect(`http://${link.longUrl}`);
 });
 
-module.exports = { createShortLink, createCustomShortLink, getLongUrl };
+// @desc    Get QR code for short link
+// @route   GET /api/links/:shortUrl/qr
+// @access  Public
+const getShortLinkQrCode = asyncHandler(async (req, res) => {
+    const { shortUrl } = req.params;
+
+    const link = await Link.findOne({ shortUrl });
+
+    if (!link) {
+        res.status(404);
+        throw new Error('Link not found');
+    }
+
+    const qrCodeData = link.qrCode.split(',')[1];
+
+    const buffer = Buffer.from(qrCodeData, 'base64');
+
+    res.contentType('image/png');
+    res.set('Content-disposition', `attachment; filename=TUNLURL_QRcode_${shortUrl}.png`);
+    res.send(buffer);
+    res.status(200);
+});
+
+module.exports = { createShortLink, createCustomShortLink, getLongUrl, getShortLinkQrCode };

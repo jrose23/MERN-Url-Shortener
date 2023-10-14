@@ -3,7 +3,8 @@ const router = express.Router();
 const {
     createShortLink,
     createCustomShortLink,
-    getLongUrl
+    getLongUrl,
+    getShortLinkQrCode
 } = require('../controllers/linkController');
 
 // Creat default short link
@@ -12,7 +13,10 @@ router.post('/', createShortLink);
 // Creat custom short link
 router.post('/custom', createCustomShortLink);
 
-// Get long link
+// Get long url from short link
 router.get('/:shortUrl', getLongUrl);
+
+// Get QR code for short link
+router.get('/:shortUrl/qr', getShortLinkQrCode);
 
 module.exports = router;
