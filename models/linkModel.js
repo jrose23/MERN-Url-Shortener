@@ -17,7 +17,8 @@ const linkSchema = new Schema(
             type: String
         },
         views: {
-            type: Number
+            type: Number,
+            default: 0
         }
     },
     { timestamps: true }

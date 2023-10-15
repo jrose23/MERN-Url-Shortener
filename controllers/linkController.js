@@ -14,9 +14,7 @@ const createShortLink = asyncHandler(async (req, res) => {
 
     const qrCode = await QRcode.toDataURL(`http://localhost:5000/api/links/${shortUrl}`);
 
-    const views = 0;
-
-    const shortLink = await Link.create({ longUrl, shortUrl, qrCode, views });
+    const shortLink = await Link.create({ longUrl, shortUrl, qrCode });
 
     if (!shortLink) {
         res.status(500);
