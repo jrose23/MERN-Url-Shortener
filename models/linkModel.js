@@ -15,6 +15,9 @@ const linkSchema = new Schema(
         },
         qrCode: {
             type: String
+        },
+        views: {
+            type: Number
         }
     },
     { timestamps: true }

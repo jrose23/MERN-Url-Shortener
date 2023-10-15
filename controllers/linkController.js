@@ -14,7 +14,9 @@ const createShortLink = asyncHandler(async (req, res) => {
 
     const qrCode = await QRcode.toDataURL(`http://localhost:5000/api/links/${shortUrl}`);
 
-    const shortLink = await Link.create({ longUrl, shortUrl, qrCode });
+    const views = 0;
+
+    const shortLink = await Link.create({ longUrl, shortUrl, qrCode, views });
 
     if (!shortLink) {
         res.status(500);
@@ -54,6 +56,10 @@ const getLongUrl = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error('Link not found');
     }
+
+    // Increment link views count
+    link.views++;
+    await link.save();
 
     res.status(200).redirect(`http://${link.longUrl}`);
 });
